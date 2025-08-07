@@ -24,6 +24,12 @@ configurations {
     }
 }
 
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2025.0.0"
+    }
+}
 repositories {
     mavenCentral()
     maven { url 'https://repo.spring.io/milestone' }
@@ -49,18 +55,14 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'org.redisson:redisson-spring-boot-starter:3.24.3'
+
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // TEST
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.h2database:h2'
     testRuntimeOnly 'com.h2database:h2'
-
-
-
-    // JSON
-    implementation 'org.json:json:20231013'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
     //Query DSL
     implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
@@ -78,3 +80,4 @@ clean {
 tasks.named('test') {
     useJUnitPlatform()
 }
+

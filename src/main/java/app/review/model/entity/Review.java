@@ -1,4 +1,4 @@
-package app.domain.review.model.entity;
+package app.review.model.entity;
 
 import java.util.UUID;
 

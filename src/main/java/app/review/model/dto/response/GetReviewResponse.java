@@ -1,4 +1,4 @@
-package app.domain.review.model.dto.response;
+package app.review.model.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

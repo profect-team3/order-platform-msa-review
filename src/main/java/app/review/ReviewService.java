@@ -1,18 +1,15 @@
 // app.domain.review.ReviewService.java
-package app.domain.review;
+package app.review;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import app.domain.review.model.ReviewRepository;
-import app.domain.review.model.dto.request.CreateReviewRequest;
-import app.domain.review.model.dto.response.GetReviewResponse;
-import app.domain.review.model.entity.Review;
-import app.domain.review.status.ReviewErrorStatus;
-import app.global.apiPayload.code.status.ErrorStatus;
+import app.review.model.ReviewRepository;
+import app.review.model.dto.response.GetReviewResponse;
+import app.review.model.entity.Review;
+import app.review.status.ReviewErrorStatus;
 import app.global.apiPayload.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 

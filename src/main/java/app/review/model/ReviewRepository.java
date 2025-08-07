@@ -1,11 +1,11 @@
-package app.domain.review.model;
+package app.review.model;
 
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import app.domain.review.model.entity.Review;
+import app.review.model.entity.Review;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, UUID> {
