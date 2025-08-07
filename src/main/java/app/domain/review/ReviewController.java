@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.domain.review.model.dto.request.CreateReviewRequest;
@@ -25,18 +26,16 @@ public class ReviewController {
 
 	private final ReviewService reviewService;
 
-	@PostMapping
-	@Operation(summary = "리뷰 생성 API", description = "리뷰를 생성합니다.")
-	public ApiResponse<String> createReview(
-		@Valid @RequestBody CreateReviewRequest request
-	) {
-		return ApiResponse.onSuccess(ReviewSuccessStatus.REVIEW_CREATED, reviewService.createReview(request));
-	}
+
 
 	@GetMapping
 	@Operation(summary = "리뷰 조회 API", description = "리뷰를 조회합니다.")
 	public ApiResponse<List<GetReviewResponse>> getReviews(
+		@RequestParam Long userId
 	) {
-		return ApiResponse.onSuccess(ReviewSuccessStatus.GET_REVIEWS_SUCCESS, reviewService.getReviews());
+
+		List<GetReviewResponse> a=reviewService.getReviews(userId);
+		System.out.println("a = " + a.get(0).toString());
+		return ApiResponse.onSuccess(ReviewSuccessStatus.GET_REVIEWS_SUCCESS, a);
 	}
 }

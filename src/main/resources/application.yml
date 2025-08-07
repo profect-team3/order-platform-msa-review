@@ -12,7 +12,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
@@ -35,6 +35,6 @@ jwt:
   refresh-token-validity-in-milliseconds: 1209600000 # 14 days
 
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /api

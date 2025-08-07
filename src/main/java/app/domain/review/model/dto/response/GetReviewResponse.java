@@ -4,14 +4,12 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.ToString;
 
+@ToString
 public class GetReviewResponse {
 	@Schema(description = "리뷰 ID", example = "123e4567-e89b-12d3-a456-426614174001")
 	private UUID reviewId;
-	@Schema(description = "고객 이름", example = "홍길동")
-	private String customerName;
-	@Schema(description = "가게 이름", example = "맛있는 치킨집")
-	private String storeName;
 	@Schema(description = "평점", example = "5")
 	private Long rating;
 	@Schema(description = "리뷰 내용", example = "맛있어요!")
@@ -22,10 +20,8 @@ public class GetReviewResponse {
 	public GetReviewResponse() {
 	}
 
-	public GetReviewResponse(UUID reviewId, String customerName, String storeName, Long rating, String content, LocalDateTime createdAt) {
+	public GetReviewResponse(UUID reviewId, Long rating, String content, LocalDateTime createdAt) {
 		this.reviewId = reviewId;
-		this.customerName = customerName;
-		this.storeName = storeName;
 		this.rating = rating;
 		this.content = content;
 		this.createdAt = createdAt;
@@ -39,21 +35,6 @@ public class GetReviewResponse {
 		this.reviewId = reviewId;
 	}
 
-	public String getCustomerName() {
-		return customerName;
-	}
-
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-
-	public String getStoreName() {
-		return storeName;
-	}
-
-	public void setStoreName(String storeName) {
-		this.storeName = storeName;
-	}
 
 	public Long getRating() {
 		return rating;
