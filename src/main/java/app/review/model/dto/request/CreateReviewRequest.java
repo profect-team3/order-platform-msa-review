@@ -14,6 +14,9 @@ public class CreateReviewRequest {
 	@NotNull(message = "주문 ID는 필수입니다.")
 	private UUID ordersId;
 
+	@NotNull(message = "가게 ID는 필수입니다.")
+	private UUID storeId;
+
 	@NotNull(message = "평점은 필수입니다.")
 	@Min(value = 1, message = "평점은 1 이상이어야 합니다.")
 	@Max(value = 5, message = "평점은 5 이하여야 합니다.")
@@ -25,12 +28,13 @@ public class CreateReviewRequest {
 	public CreateReviewRequest() {
 	}
 
-	public CreateReviewRequest(UUID ordersId, Long rating, String content) {
+	public CreateReviewRequest(UUID ordersId, UUID storeId, Long rating, String content) {
 		this.ordersId = ordersId;
+		this.storeId = storeId;
 		this.rating = rating;
 		this.content = content;
 	}
-
+	public UUID getStoreId() {return storeId;}
 	public UUID getOrdersId() {
 		return ordersId;
 	}

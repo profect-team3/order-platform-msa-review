@@ -9,7 +9,6 @@ public class reviewApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(reviewApplication.class, args);
-		System.out.println("hello world");
 	}
 
 }

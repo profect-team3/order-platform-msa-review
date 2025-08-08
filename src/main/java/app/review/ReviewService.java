@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import app.review.model.ReviewRepository;
+import app.review.model.dto.request.CreateReviewRequest;
 import app.review.model.dto.response.GetReviewResponse;
 import app.review.model.entity.Review;
 import app.review.status.ReviewErrorStatus;
@@ -21,33 +22,24 @@ public class ReviewService {
 	private final ReviewRepository reviewRepository;
 
 
-	// @Transactional
-	// public String createReview(CreateReviewRequest request) {
-	// 	User user = securityUtil.getCurrentUser();
-	//
-	// 	Orders order = ordersRepository.findById(request.getOrdersId())
-	// 		.orElseThrow(() -> new GeneralException(ReviewErrorStatus.ORDER_NOT_FOUND));
-	//
-	// 	if (!order.getUser().equals(user)) {
-	// 		throw new GeneralException(ErrorStatus._FORBIDDEN);
-	// 	}
-	//
-	// 	if (reviewRepository.existsByOrders(order)) {
-	// 		throw new GeneralException(ReviewErrorStatus.REVIEW_ALREADY_EXISTS);
-	// 	}
-	//
-	// 	Review review = Review.builder()
-	// 		.user(user)
-	// 		.store(order.getStore())
-	// 		.orders(order)
-	// 		.rating(request.getRating())
-	// 		.content(request.getContent())
-	// 		.build();
-	//
-	// 	Review savedReview = reviewRepository.save(review);
-	//
-	// 	return "리뷰 : " + savedReview.getReviewId() + " 가 생성되었습니다.";
-	// }
+	@Transactional
+	public String createReview(Long userId, CreateReviewRequest request) {
+		if (reviewRepository.existsByOrders(request.getOrdersId())) {
+			throw new GeneralException(ReviewErrorStatus.REVIEW_ALREADY_EXISTS);
+		}
+
+		Review review = Review.builder()
+			.userId(userId)
+			.store(request.getStoreId())
+			.orders(request.getOrdersId())
+			.rating(request.getRating())
+			.content(request.getContent())
+			.build();
+
+		Review savedReview = reviewRepository.save(review);
+
+		return "리뷰 : " + savedReview.getReviewId() + " 가 생성되었습니다.";
+	}
 
 	public List<GetReviewResponse> getReviews(Long userId) throws GeneralException {
 

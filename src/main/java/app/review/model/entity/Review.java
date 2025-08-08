@@ -28,10 +28,13 @@ public class Review extends BaseEntity {
 	@GeneratedValue
 	private UUID reviewId;
 
+	@Column(name = "b_order_id")
 	private UUID orders;
 
+	@Column(name="user_id")
 	private Long userId;
 
+	@Column(name="store_id")
 	private UUID store;
 
 	@Column(nullable = false)
