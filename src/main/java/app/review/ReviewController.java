@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.review.model.dto.request.CreateReviewRequest;
+import app.review.model.dto.request.DeleteReviewRequest;
 import app.review.model.dto.response.GetReviewResponse;
 import app.review.status.ReviewSuccessStatus;
 import app.global.apiPayload.ApiResponse;
@@ -43,11 +45,12 @@ public class ReviewController {
 	) {
 		return ApiResponse.onSuccess(ReviewSuccessStatus.GET_REVIEWS_SUCCESS, reviewService.getReviews(userId));
 	}
-	// @DeleteMapping
-	// @Operation(summary = "리뷰 삭제 API", description = "리뷰를 삭제합니다.")
-	// public ApiResponse<String> deleteReview(
-	// 	@RequestParam Long reviewId
-	// 	@Valid @Req
-	// )
-
+	@PatchMapping
+	@Operation(summary = "리뷰 삭제 API", description = "리뷰를 삭제합니다.")
+	public ApiResponse<String> deleteReview(
+		@RequestParam Long userId,
+		@Valid @RequestBody DeleteReviewRequest request
+	){
+		return ApiResponse.onSuccess((ReviewSuccessStatus.REVIEW_DELETED), reviewService.deleteReview(userId, request));
+	}
 }

@@ -10,7 +10,7 @@ import app.review.model.entity.Review;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, UUID> {
 
-	List<Review> findByUserId(Long userid);
+	List<Review> findByUserIdAndDeletedAtIsNull(Long userid);
 
 	// @Query("SELECT AVG(r.rating) FROM Review r WHERE r.store.storeId = :storeId")
 	// Double getAverageRatingByStore(@Param("storeId") UUID storeId);
@@ -18,5 +18,4 @@ public interface ReviewRepository extends JpaRepository<Review, UUID> {
 	// List<Review> findByStore(Store store);
 	//
 	boolean existsByOrders(UUID ordersId);
-
 }
