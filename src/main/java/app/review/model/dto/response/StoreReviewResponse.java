@@ -6,9 +6,9 @@ import lombok.Getter;
 
 @Getter
 public class StoreReviewResponse {
-	UUID storeId;
-	Long number;
-	Double average;
+	private UUID storeId;
+	private Long number;
+	private Double average;
 
 	public StoreReviewResponse(){
 	}
