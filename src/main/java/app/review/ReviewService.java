@@ -1,4 +1,3 @@
-// app.domain.review.ReviewService.java
 package app.review;
 
 import java.util.List;
