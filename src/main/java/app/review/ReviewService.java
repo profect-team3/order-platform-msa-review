@@ -28,8 +28,8 @@ public class ReviewService {
 		}
 		Review review = Review.builder()
 			.userId(userId)
-			.store(request.getStoreId())
-			.orders(request.getOrdersId())
+			.storeId(request.getStoreId())
+			.orderId(request.getOrdersId())
 			.rating(request.getRating())
 			.content(request.getContent())
 			.build();
@@ -45,6 +45,8 @@ public class ReviewService {
 		List<GetReviewResponse> responses = userReviews.stream()
 			.map(review -> new GetReviewResponse(
 				review.getReviewId(),
+				review.getUsername(),
+				review.getStoreName(),
 				review.getRating(),
 				review.getContent(),
 				review.getCreatedAt()

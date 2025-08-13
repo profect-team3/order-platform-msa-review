@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.global.apiPayload.ApiResponse;
+import app.review.model.dto.response.GetReviewResponse;
 import app.review.model.dto.response.StoreReviewResponse;
 import app.review.status.ReviewSuccessStatus;
 import lombok.RequiredArgsConstructor;
@@ -22,4 +24,11 @@ public class InternalStoreController {
 		List<StoreReviewResponse> storeReviewResponses=internalStoreService.getStoreReviewAverage(storeIds);
 		return ApiResponse.onSuccess(ReviewSuccessStatus.GET_STORE_REVIEW_AVERAGE_SUCCESS,storeReviewResponses);
 	}
+
+	@GetMapping("/Internal/review/{storeId}")
+	public ApiResponse<List<GetReviewResponse>> getReviewsByStoreId(@PathVariable UUID storeId){
+		List<GetReviewResponse> reviewResponse = internalStoreService.getReviewsByStoreId(storeId);
+		return ApiResponse.onSuccess(ReviewSuccessStatus.GET_STORE_REVIEW_AVERAGE_SUCCESS,reviewResponse);
+	}
+
 }

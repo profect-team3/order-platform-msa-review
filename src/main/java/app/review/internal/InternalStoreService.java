@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import app.global.apiPayload.code.status.ErrorStatus;
 import app.global.apiPayload.exception.GeneralException;
 import app.review.model.ReviewRepository;
+import app.review.model.dto.response.GetReviewResponse;
 import app.review.model.dto.response.StoreReviewResponse;
 import app.review.model.entity.Review;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,22 @@ public class InternalStoreService {
 			}
 		});
 		return response;
+	}
+
+	public List<GetReviewResponse> getReviewsByStoreId(UUID storeId){
+		try {
+			List<Review> reviews=reviewRepository.findByStoreId(storeId);
+			List<GetReviewResponse> response=reviews.stream().map(review->new GetReviewResponse(
+				review.getReviewId(),
+				review.getUsername(),
+				review.getStoreName(),
+				review.getRating(),
+				review.getContent(),
+				review.getCreatedAt()
+			)).toList();
+			return response;
+		} catch (Exception e) {
+			throw new GeneralException(ErrorStatus._INTERNAL_SERVER_ERROR);
+		}
 	}
 }
