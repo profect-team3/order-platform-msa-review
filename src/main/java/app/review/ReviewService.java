@@ -5,13 +5,20 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import app.global.apiPayload.ApiResponse;
+import app.global.apiPayload.code.status.ErrorStatus;
+import app.review.client.InternalStoreClient;
+import app.review.client.InternalUserClient;
 import app.review.model.ReviewRepository;
 import app.review.model.dto.request.CreateReviewRequest;
 import app.review.model.dto.request.DeleteReviewRequest;
 import app.review.model.dto.response.GetReviewResponse;
+import app.review.model.dto.response.GetUserInfoResponse;
 import app.review.model.entity.Review;
 import app.review.status.ReviewErrorStatus;
 import app.global.apiPayload.exception.GeneralException;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -20,16 +27,31 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class ReviewService {
 	private final ReviewRepository reviewRepository;
+	private final InternalStoreClient storeClient;
+	private final InternalUserClient userClient;
 
 	@Transactional
 	public String createReview(Long userId, CreateReviewRequest request) {
 		if (reviewRepository.existsByOrders(request.getOrdersId())) {
 			throw new GeneralException(ReviewErrorStatus.REVIEW_ALREADY_EXISTS);
 		}
+
+		ApiResponse<String> getStoreNameResponse =storeClient.getStoreName(request.getStoreId());
+		if(!getStoreNameResponse.isSuccess()){
+			throw new GeneralException(ErrorStatus.STORE_NOT_FOUND);
+		}
+
+		ApiResponse<GetUserInfoResponse> getUserInfoResponse =userClient.getUserInfo(userId);
+		if(!getUserInfoResponse.isSuccess()){
+			throw new GeneralException(ErrorStatus.USER_NOT_FOUND);
+		}
+
 		Review review = Review.builder()
 			.userId(userId)
-			.store(request.getStoreId())
-			.orders(request.getOrdersId())
+			.username(getUserInfoResponse.result().getUsername())
+			.storeId(request.getStoreId())
+			.storeName(getStoreNameResponse.result())
+			.orderId(request.getOrdersId())
 			.rating(request.getRating())
 			.content(request.getContent())
 			.build();
@@ -45,6 +67,8 @@ public class ReviewService {
 		List<GetReviewResponse> responses = userReviews.stream()
 			.map(review -> new GetReviewResponse(
 				review.getReviewId(),
+				review.getUsername(),
+				review.getStoreName(),
 				review.getRating(),
 				review.getContent(),
 				review.getCreatedAt()

@@ -29,13 +29,19 @@ public class Review extends BaseEntity {
 	private UUID reviewId;
 
 	@Column(name = "b_order_id")
-	private UUID orders;
+	private UUID orderId;
 
 	@Column(name="user_id")
 	private Long userId;
 
+	@Column(name="user_name")
+	private String username;
+
 	@Column(name="store_id")
-	private UUID store;
+	private UUID storeId;
+
+	@Column(name="store_name")
+	private String storeName;
 
 	@Column(nullable = false)
 	private Long rating;
