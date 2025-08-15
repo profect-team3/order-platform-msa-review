@@ -32,7 +32,7 @@ public class ReviewService {
 
 	@Transactional
 	public String createReview(Long userId, CreateReviewRequest request) {
-		if (reviewRepository.existsByOrders(request.getOrdersId())) {
+		if (reviewRepository.existsByOrderId(request.getOrdersId())) {
 			throw new GeneralException(ReviewErrorStatus.REVIEW_ALREADY_EXISTS);
 		}
 
