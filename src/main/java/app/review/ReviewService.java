@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import app.global.apiPayload.ApiResponse;
 import app.global.apiPayload.code.status.ErrorStatus;
@@ -21,10 +23,12 @@ import app.global.apiPayload.exception.GeneralException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class ReviewService {
 	private final ReviewRepository reviewRepository;
 	private final InternalStoreClient storeClient;
@@ -36,13 +40,19 @@ public class ReviewService {
 			throw new GeneralException(ReviewErrorStatus.REVIEW_ALREADY_EXISTS);
 		}
 
-		ApiResponse<String> getStoreNameResponse =storeClient.getStoreName(request.getStoreId());
-		if(!getStoreNameResponse.isSuccess()){
+		ApiResponse<String> getStoreNameResponse;
+		try {
+			getStoreNameResponse = storeClient.getStoreName(request.getStoreId());
+		} catch (HttpServerErrorException | HttpClientErrorException e) {
+			log.error("Store Service Error: {}", e.getResponseBodyAsString());
 			throw new GeneralException(ErrorStatus.STORE_NOT_FOUND);
 		}
 
-		ApiResponse<GetUserInfoResponse> getUserInfoResponse =userClient.getUserInfo(userId);
-		if(!getUserInfoResponse.isSuccess()){
+		ApiResponse<GetUserInfoResponse> getUserInfoResponse;
+		try {
+			getUserInfoResponse = userClient.getUserInfo(userId);
+		} catch (HttpClientErrorException | HttpServerErrorException e) {
+			log.error("User Service Error: {}", e.getResponseBodyAsString());
 			throw new GeneralException(ErrorStatus.USER_NOT_FOUND);
 		}
 
