@@ -7,13 +7,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import app.commonSecurity.TokenPrincipalParser;
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class RestTemplateConfig {
+
+	private final TokenPrincipalParser tokenPrincipalParser;
 
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		return builder
-			.connectTimeout(Duration.ofSeconds(5)) // 연결 타임아웃// 응답 대기 타임아웃
+			.additionalInterceptors((req, body, ex) -> {
+				tokenPrincipalParser.tryGetAccessToken()
+					.ifPresent(token -> req.getHeaders().setBearerAuth(token));
+				return ex.execute(req, body);
+			})
+			.connectTimeout(Duration.ofSeconds(5))
 			.build();
 	}
 }

@@ -3,11 +3,13 @@ package app.review;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
+import app.commonSecurity.TokenPrincipalParser;
 import app.global.apiPayload.ApiResponse;
 import app.global.apiPayload.code.status.ErrorStatus;
 import app.review.client.InternalStoreClient;
@@ -33,9 +35,11 @@ public class ReviewService {
 	private final ReviewRepository reviewRepository;
 	private final InternalStoreClient storeClient;
 	private final InternalUserClient userClient;
-
+	private final TokenPrincipalParser tokenPrincipalParser;
 	@Transactional
-	public String createReview(Long userId, CreateReviewRequest request) {
+	public String createReview(Authentication authentication, CreateReviewRequest request) {
+		String userIdStr = tokenPrincipalParser.getUserId(authentication);
+		Long userId = Long.parseLong(userIdStr);
 		if (reviewRepository.existsByOrderId(request.getOrdersId())) {
 			throw new GeneralException(ReviewErrorStatus.REVIEW_ALREADY_EXISTS);
 		}
@@ -50,7 +54,7 @@ public class ReviewService {
 
 		ApiResponse<GetUserInfoResponse> getUserInfoResponse;
 		try {
-			getUserInfoResponse = userClient.getUserInfo(userId);
+			getUserInfoResponse = userClient.getUserInfo();
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
 			log.error("User Service Error: {}", e.getResponseBodyAsString());
 			throw new GeneralException(ErrorStatus.USER_NOT_FOUND);
@@ -69,7 +73,9 @@ public class ReviewService {
 		return "리뷰 : " + savedReview.getReviewId() + " 가 생성되었습니다.";
 	}
 
-	public List<GetReviewResponse> getReviews(Long userId) throws GeneralException {
+	public List<GetReviewResponse> getReviews(Authentication authentication) throws GeneralException {
+		String userIdStr = tokenPrincipalParser.getUserId(authentication);
+		Long userId = Long.parseLong(userIdStr);
 		List<Review> userReviews = reviewRepository.findByUserIdAndDeletedAtIsNull(userId);
 		if (userReviews.isEmpty()) {
 			throw new GeneralException(ReviewErrorStatus.NO_REVIEWS_FOUND_FOR_USER);
@@ -88,7 +94,9 @@ public class ReviewService {
 	}
 
 	@Transactional
-	public String deleteReview(Long userId, @Valid DeleteReviewRequest request) {
+	public String deleteReview(Authentication authentication, @Valid DeleteReviewRequest request) {
+		String userIdStr = tokenPrincipalParser.getUserId(authentication);
+		Long userId = Long.parseLong(userIdStr);
 		Review review = reviewRepository.findById(request.getReviewId())
 			.orElseThrow(() -> new GeneralException(ReviewErrorStatus.REVIEW_NOT_FOUND));
 		if (!review.getUserId().equals(userId)) {

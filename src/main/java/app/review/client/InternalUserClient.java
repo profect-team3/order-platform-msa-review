@@ -21,8 +21,8 @@ public class InternalUserClient {
 	@Value("${store.service.url:http://localhost:8081}")
 	private String userServiceUrl;
 
-	public ApiResponse<GetUserInfoResponse> getUserInfo(Long userId) {
-		String url = userServiceUrl + "/internal/user/" + userId + "/info";
+	public ApiResponse<GetUserInfoResponse> getUserInfo() {
+		String url = userServiceUrl + "/internal/user/info" ;
 
 		ResponseEntity<ApiResponse<GetUserInfoResponse>> response = restTemplate.exchange(
 			url,

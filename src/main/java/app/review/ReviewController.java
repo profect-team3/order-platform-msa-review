@@ -2,6 +2,7 @@ package app.review;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -32,25 +33,25 @@ public class ReviewController {
 	@PostMapping
 	@Operation(summary = "리뷰 생성 API", description = "리뷰를 생성합니다.")
 	public ApiResponse<String> createReview(
-		@RequestParam Long userId,
+		Authentication authentication,
 		@Valid @RequestBody CreateReviewRequest request
 	) {
-		return ApiResponse.onSuccess(ReviewSuccessStatus.REVIEW_CREATED, reviewService.createReview(userId, request));
+		return ApiResponse.onSuccess(ReviewSuccessStatus.REVIEW_CREATED, reviewService.createReview(authentication, request));
 	}
 
 	@GetMapping
 	@Operation(summary = "리뷰 조회 API", description = "리뷰를 조회합니다.")
 	public ApiResponse<List<GetReviewResponse>> getReviews(
-		@RequestParam Long userId
+		Authentication authentication
 	) {
-		return ApiResponse.onSuccess(ReviewSuccessStatus.GET_REVIEWS_SUCCESS, reviewService.getReviews(userId));
+		return ApiResponse.onSuccess(ReviewSuccessStatus.GET_REVIEWS_SUCCESS, reviewService.getReviews(authentication));
 	}
 	@PatchMapping
 	@Operation(summary = "리뷰 삭제 API", description = "리뷰를 삭제합니다.")
 	public ApiResponse<String> deleteReview(
-		@RequestParam Long userId,
+		Authentication authentication,
 		@Valid @RequestBody DeleteReviewRequest request
 	){
-		return ApiResponse.onSuccess((ReviewSuccessStatus.REVIEW_DELETED), reviewService.deleteReview(userId, request));
+		return ApiResponse.onSuccess((ReviewSuccessStatus.REVIEW_DELETED), reviewService.deleteReview(authentication, request));
 	}
 }
