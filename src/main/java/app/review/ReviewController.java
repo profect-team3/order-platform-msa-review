@@ -2,6 +2,7 @@ package app.review;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping
+@PreAuthorize("hasRole('CUSTOMER')")
 public class ReviewController {
 
 	private final ReviewService reviewService;
