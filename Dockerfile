@@ -4,7 +4,7 @@ WORKDIR /workspace
 
 # 1. 전체 프로젝트의 Gradle 설정 파일들을 먼저 복사합니다.
 # 이 파일들이 변경될 때만 Gradle 의존성을 새로 다운로드하게 됩니다.
-COPY gradlew gradlew.bat settings.gradle build.gradle gradle.properties ./
+COPY gradlew gradlew.bat settings.gradle build.gradle ./
 COPY gradle ./gradle
 
 # 2. 빌드에 필요한 'review' 모듈의 소스 코드만 복사합니다.
