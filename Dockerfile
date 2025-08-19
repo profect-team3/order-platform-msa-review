@@ -3,6 +3,7 @@ FROM gradle:8.8-jdk17 AS builder
 WORKDIR /workspace
 
 # 프로젝트 설정 파일 복사
+COPY gradlew /workspace/
 COPY settings.gradle* build.gradle* gradle.properties* /workspace/
 COPY src /workspace/src
 
