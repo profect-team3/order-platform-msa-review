@@ -4,6 +4,8 @@ WORKDIR /workspace
 
 # 프로젝트 설정 파일 복사
 COPY gradlew /workspace/
+COPY gradle/wrapper/gradle-wrapper.jar /workspace/gradle/wrapper/
+COPY gradle/wrapper/gradle-wrapper.properties /workspace/gradle/wrapper/
 COPY settings.gradle* build.gradle* gradle.properties* /workspace/
 COPY src /workspace/src
 
