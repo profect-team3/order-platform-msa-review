@@ -4,9 +4,9 @@ spring:
   config:
     import: optional:file:.env[.properties]
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://10.0.11.196:5432/order_platform
+    username: myuser
+    password: ChangeMe-App!
     driver-class-name: org.postgresql.Driver
 
   jpa:
