@@ -23,3 +23,4 @@ COPY --from=builder /workspace/order-platform-msa-review/build/libs/*.jar /app/a
 
 EXPOSE 8086
 ENTRYPOINT ["java", "-jar", "/app/application.jar"]
+
