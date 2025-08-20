@@ -3,9 +3,11 @@ package app.review.model.dto.response;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import lombok.Getter;
 import lombok.ToString;
 
 @ToString
+@Getter
 public class GetReviewResponse {
 	private UUID reviewId;
 	private String username;
