@@ -1,26 +1,23 @@
-# Stage 1: Build the application
+# Stage 1: Build
 FROM gradle:8.8-jdk17 AS builder
 WORKDIR /workspace
 
-# 프로젝트 설정 파일 복사
-COPY settings.gradle* build.gradle* gradle.properties* /workspace/
-COPY src /workspace/src
+# 1. 전체 프로젝트의 Gradle 설정 파일들을 먼저 복사합니다.
+# 이 파일들이 변경될 때만 Gradle 의존성을 새로 다운로드하게 됩니다.
+COPY gradlew gradlew.bat settings.gradle build.gradle ./
+COPY gradle ./gradle
 
-# Gradle 실행권한 부여
-RUN chmod +x gradlew
+# 2. 빌드에 필요한 'review' 모듈의 소스 코드만 복사합니다.
+# '.' 대신 특정 모듈 폴더를 지정하여 다른 모듈의 변경에 영향을 받지 않도록 합니다.
+COPY order-platform-msa-review ./order-platform-msa-review
 
-# 빌드 (테스트 제외)
-RUN ./gradlew build -x test
+# 3. 전체 프로젝트 컨텍스트에서 특정 모듈을 빌드합니다.
+RUN ./gradlew :order-platform-msa-review:build -x test
 
-# Stage 2: Create the final, lightweight image
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 
-# Gradle 빌드 결과물만 복사
-COPY --from=builder /workspace/build/libs/*.jar /app/application.jar
+COPY --from=builder /workspace/order-platform-msa-review/build/libs/*.jar /app/application.jar
 
-# 포트 설정
 EXPOSE 8086
-
-# 실행
 ENTRYPOINT ["java", "-jar", "/app/application.jar"]
