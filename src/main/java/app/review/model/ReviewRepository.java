@@ -12,12 +12,6 @@ public interface ReviewRepository extends JpaRepository<Review, UUID> {
 
 	List<Review> findByUserIdAndDeletedAtIsNull(Long userid);
 
-	// @Query("SELECT AVG(r.rating) FROM Review r WHERE r.store.storeId = :storeId")
-	// Double getAverageRatingByStore(@Param("storeId") UUID storeId);
-	//
-	// List<Review> findByStore(Store store);
-	//
-
 	List<Review> findByStoreId(UUID storeId);
 
 	boolean existsByOrderId(UUID orderId);
