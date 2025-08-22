@@ -4,9 +4,9 @@ spring:
   config:
     import: optional:file:.env[.properties]
   datasource:
-    url: jdbc:postgresql://10.0.11.196:5432/order_platform
-    username: myuser
-    password: ChangeMe-App!
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -18,16 +18,6 @@ spring:
         format_sql: true
         show_sql: true
         use_sql_comments: true
-
-  data:
-    redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
-      password: ${REDIS_PASSWORD}
-      database: 0
-  ai:
-    openai:
-      api-key: ${OPENAI_API_KEY}
 
   security:
     oauth2:
