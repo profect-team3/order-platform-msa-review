@@ -6,12 +6,12 @@ COPY gradle ./gradle
 COPY order-platform-msa-review ./order-platform-msa-review
 COPY order-platform-msa-review/build.cloud.gradle ./order-platform-msa-review/build.gradle
 
-RUN ./gradlew :order-platform-msa-review:build -x test
+RUN ./gradlew :order-platform-msa-review:bootJar -x test
 
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:17-jre-slim
 WORKDIR /app
 
-COPY --from=builder /workspace/order-platform-msa-review/build/libs/*.jar /app/application.jar
+COPY --from=builder /workspace/order-platform-msa-review/build/libs/*-boot.jar /app/application.jar
 
 EXPOSE 8086
-ENTRYPOINT ["java", "-jar", "/app/application.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "/app/application.jar"]
