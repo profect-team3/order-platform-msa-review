@@ -66,6 +66,9 @@ dependencies {
 
     testImplementation 'org.springframework.security:spring-security-test'
 
+    //Health Check
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+
 }
 
 clean {
