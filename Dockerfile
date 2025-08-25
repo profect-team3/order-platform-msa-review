@@ -7,7 +7,7 @@ COPY order-platform-msa-review ./order-platform-msa-review
 COPY order-platform-msa-review/build.cloud.gradle ./order-platform-msa-review/build.gradle
 
 RUN chmod +x ./gradlew
-RUN ./gradlew :order-platform-msa-review:bootJar -x test
+RUN ./gradlew :order-platform-msa-review:bootJar -x test --stacktrace
 
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
