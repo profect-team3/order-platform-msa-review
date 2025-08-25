@@ -12,7 +12,7 @@ RUN ./gradlew :order-platform-msa-review:bootJar -x test
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 
-COPY --from=builder /workspace/order-platform-msa-review/build/libs/application.jar /app/application.jar
+COPY --from=builder /workspace/order-platform-msa-review/build/libs/*.jar /app/application.jar
 
 EXPOSE 8086
 ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "/app/application.jar"]
