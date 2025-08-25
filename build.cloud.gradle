@@ -25,13 +25,6 @@ configurations {
 }
 
 
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2025.0.0"
-    }
-}
-
-
 dependencies {
     // core
     implementation 'org.springframework.boot:spring-boot-starter-web'
