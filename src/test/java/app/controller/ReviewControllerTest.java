@@ -66,7 +66,7 @@ class ReviewControllerTest {
 		when(reviewService.createReview(any(),any(CreateReviewRequest.class)))
 			.thenReturn(resultMessage);
 
-		mockMvc.perform(post("")
+		mockMvc.perform(post("/review")
 				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
@@ -94,7 +94,7 @@ class ReviewControllerTest {
 		when(reviewService.getReviews(any()))
 			.thenReturn(responseList);
 
-		mockMvc.perform(get("")).andDo(print())
+		mockMvc.perform(get("/review"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.code").value(ReviewSuccessStatus.GET_REVIEWS_SUCCESS.getCode()))
@@ -114,7 +114,7 @@ class ReviewControllerTest {
 		when(reviewService.createReview(any(),any(CreateReviewRequest.class)))
 			.thenThrow(new GeneralException(ReviewErrorStatus.REVIEW_ALREADY_EXISTS));
 
-		mockMvc.perform(post("")
+		mockMvc.perform(post("/review")
 				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
@@ -130,7 +130,7 @@ class ReviewControllerTest {
 		when(reviewService.getReviews(any()))
 			.thenThrow(new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
-		mockMvc.perform(get(""))
+		mockMvc.perform(get("/review"))
 			.andExpect(status().isNotFound())
 			.andExpect(jsonPath("$.isSuccess").value(false))
 			.andExpect(jsonPath("$.code").value(ErrorStatus.USER_NOT_FOUND.getCode()))
@@ -143,7 +143,7 @@ class ReviewControllerTest {
 		when(reviewService.getReviews(any()))
 			.thenThrow(new GeneralException(ReviewErrorStatus.NO_REVIEWS_FOUND_FOR_USER));
 
-		mockMvc.perform(get(""))
+		mockMvc.perform(get("/review"))
 			.andExpect(status().isNotFound())
 			.andExpect(jsonPath("$.isSuccess").value(false))
 			.andExpect(jsonPath("$.code").value(ReviewErrorStatus.NO_REVIEWS_FOUND_FOR_USER.getCode()))
@@ -155,7 +155,7 @@ class ReviewControllerTest {
 	void createReview_Fail_InvalidInput() throws Exception {
 		CreateReviewRequest request = new CreateReviewRequest(null,null, null, "");
 
-		mockMvc.perform(post("")
+		mockMvc.perform(post("/review")
 				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
