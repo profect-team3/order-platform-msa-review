@@ -54,7 +54,11 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
-    runtimeOnly 'org.postgresql:postgresql'
+        // DB
+    runtimeOnly   "org.postgresql:postgresql"
+
+    // Security / OAuth2
+    implementation files("libs/msa-common-security-1.0.8-plain.jar")
 
     // security
     implementation files('libs/msa-common-security-1.0.7-plain.jar')
