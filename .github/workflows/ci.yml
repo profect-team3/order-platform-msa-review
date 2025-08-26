@@ -2,7 +2,7 @@ name: ECR Push - review
 
 on:
   push:
-    branches: ["dev", "refactor/seperate-ci"]
+    branches: ["dev", "refactor/seperate-ci", "Test/build"]
 
 jobs:
   build-and-push:
