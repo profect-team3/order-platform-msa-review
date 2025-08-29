@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "review", description = "리뷰 관련 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("/review")
 @PreAuthorize("hasRole('CUSTOMER')")
 public class ReviewController {
 
