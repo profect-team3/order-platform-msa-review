@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import app.global.apiPayload.ApiResponse;
+import app.commonUtil.apiPayload.ApiResponse;
 import app.review.model.dto.response.GetReviewResponse;
 import app.review.model.dto.response.StoreReviewResponse;
 import app.review.status.ReviewSuccessStatus;
