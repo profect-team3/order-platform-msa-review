@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import app.global.apiPayload.ApiResponse;
+import app.commonUtil.apiPayload.ApiResponse;
 import app.review.model.dto.response.GetUserInfoResponse;
 import lombok.RequiredArgsConstructor;
 
