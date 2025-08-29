@@ -1,18 +1,26 @@
 FROM gradle:8.8-jdk17 AS builder
+
 WORKDIR /workspace
 
-COPY gradlew gradlew.bat settings.gradle ./
+COPY gradlew .
+COPY gradlew.bat .
 COPY gradle ./gradle
-COPY order-platform-msa-review ./order-platform-msa-review
-COPY order-platform-msa-review/build.cloud.gradle ./order-platform-msa-review/build.gradle
+
+COPY build.cloud.gradle build.gradle
+COPY settings.gradle .
+
+COPY src ./src
+COPY libs ./libs
 
 RUN chmod +x ./gradlew
-RUN ./gradlew :order-platform-msa-review:bootJar -x test --stacktrace
+RUN ./gradlew bootJar
 
 FROM eclipse-temurin:17-jre-jammy
+
 WORKDIR /app
 
-COPY --from=builder /workspace/order-platform-msa-review/build/libs/*.jar /app/application.jar
+COPY --from=builder /workspace/build/libs/*.jar /app/application.jar
 
 EXPOSE 8086
+
 ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "/app/application.jar"]
