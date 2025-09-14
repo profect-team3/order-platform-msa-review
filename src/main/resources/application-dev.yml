@@ -11,6 +11,17 @@ spring:
         jwt:
           jwk-set-uri: ${OAUTH_JWKS_URI:http://localhost:8083/oauth/jwks}
 
+grpc:
+  client:
+    default:
+      address: static://localhost:50051
+      negotiationType: PLAINTEXT
+    userinfo-service:
+      address: static://localhost:50051
+      negotiationType: PLAINTEXT
+  server:
+    enabled: false  # 서버 기능을 비활성화
+
 jwt:
   audience: ${AUTH_INTERNAL_AUDIENCE:internal-services}
 
