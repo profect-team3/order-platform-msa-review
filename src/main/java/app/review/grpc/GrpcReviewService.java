@@ -33,17 +33,17 @@ public class GrpcReviewService {
 	public String createReview(Authentication authentication, CreateReviewRequest request) {
 		String userIdStr = tokenPrincipalParser.getUserId(authentication);
 		Long userId = Long.parseLong(userIdStr);
-		if (reviewRepository.existsByOrderId(request.getOrdersId())) {
-			throw new GeneralException(ReviewErrorStatus.REVIEW_ALREADY_EXISTS);
-		}
+		// if (reviewRepository.existsByOrderId(request.getOrdersId())) {
+		// 	throw new GeneralException(ReviewErrorStatus.REVIEW_ALREADY_EXISTS);
+		// }
 
-		ApiResponse<String> getStoreNameResponse;
-		try {
-			getStoreNameResponse = storeClient.getStoreName(request.getStoreId());
-		} catch (HttpServerErrorException | HttpClientErrorException e) {
-			log.error("Store Service Error: {}", e.getResponseBodyAsString());
-			throw new GeneralException(ErrorStatus.STORE_NOT_FOUND);
-		}
+		// ApiResponse<String> getStoreNameResponse;
+		// try {
+		// 	getStoreNameResponse = storeClient.getStoreName(request.getStoreId());
+		// } catch (HttpServerErrorException | HttpClientErrorException e) {
+		// 	log.error("Store Service Error: {}", e.getResponseBodyAsString());
+		// 	throw new GeneralException(ErrorStatus.STORE_NOT_FOUND);
+		// }
 
 		UserInfoProto.GetUserInfoResponse getUserInfoResponse;
 		try {
@@ -53,17 +53,18 @@ public class GrpcReviewService {
 			throw new GeneralException(ErrorStatus.USER_NOT_FOUND);
 		}
 
-		Review review = Review.builder()
-			.userId(userId)
-			.username(getUserInfoResponse.getUsername())
-			.storeId(request.getStoreId())
-			.storeName(getStoreNameResponse.result())
-			.orderId(request.getOrdersId())
-			.rating(request.getRating())
-			.content(request.getContent())
-			.build();
-		Review savedReview = reviewRepository.save(review);
-		return "리뷰 : " + savedReview.getReviewId() + " 가 생성되었습니다.";
+		// Review review = Review.builder()
+		// 	.userId(userId)
+		// 	.username(getUserInfoResponse.getUsername())
+		// 	.storeId(request.getStoreId())
+		// 	.storeName(getStoreNameResponse.result())
+		// 	.orderId(request.getOrdersId())
+		// 	.rating(request.getRating())
+		// 	.content(request.getContent())
+		// 	.build();
+		// Review savedReview = reviewRepository.save(review);
+		// return "리뷰 : " + savedReview.getReviewId() + " 가 생성되었습니다.";
+		return "test";
 	}
 
 }
