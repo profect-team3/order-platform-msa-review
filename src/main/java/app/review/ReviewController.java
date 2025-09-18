@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.commonUtil.apiPayload.ApiResponse;
+import app.review.grpc.GrpcReviewService;
 import app.review.model.dto.request.CreateReviewRequest;
 import app.review.model.dto.request.DeleteReviewRequest;
 import app.review.model.dto.response.GetReviewResponse;
@@ -29,14 +30,24 @@ import lombok.RequiredArgsConstructor;
 public class ReviewController {
 
 	private final ReviewService reviewService;
+	private final GrpcReviewService grpcReviewService;
 
-	@PostMapping
+	@PostMapping("/1")
 	@Operation(summary = "리뷰 생성 API", description = "리뷰를 생성합니다.")
-	public ApiResponse<String> createReview(
+	public ApiResponse<String> createReview1(
 		Authentication authentication,
 		@Valid @RequestBody CreateReviewRequest request
 	) {
 		return ApiResponse.onSuccess(ReviewSuccessStatus.REVIEW_CREATED, reviewService.createReview(authentication, request));
+	}
+
+	@PostMapping("/2")
+	@Operation(summary = "리뷰 생성 API", description = "리뷰를 생성합니다.")
+	public ApiResponse<String> createReview2(
+		Authentication authentication,
+		@Valid @RequestBody CreateReviewRequest request
+	) {
+		return ApiResponse.onSuccess(ReviewSuccessStatus.REVIEW_CREATED, grpcReviewService.createReview(authentication, request));
 	}
 
 	@GetMapping
